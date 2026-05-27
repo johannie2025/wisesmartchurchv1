@@ -9,7 +9,7 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
-import com.wisedesign.wisesmartchurch.EliteCastApp;
+import com.wisedesign.wisesmartchurch.WiseSmartApp;
 import com.wisedesign.wisesmartchurch.R;
 import com.wisedesign.wisesmartchurch.network.EliteNetworkManager;
 import com.wisedesign.wisesmartchurch.ui.control.ControlActivity;
@@ -44,7 +44,7 @@ public class EliteNetworkService extends Service {
         PendingIntent pi = PendingIntent.getActivity(this, 0, notifIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        return new NotificationCompat.Builder(this, EliteCastApp.CHANNEL_ID_NETWORK)
+        return new NotificationCompat.Builder(this, WiseSmartApp.CHANNEL_ID_NETWORK)
                 .setContentTitle("EliteCast Pro")
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_broadcast)
