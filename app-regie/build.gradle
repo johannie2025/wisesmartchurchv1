@@ -1,7 +1,7 @@
 plugins { id 'com.android.application' }
 
 android {
-    namespace 'com.wisedesign.wisesmartchurch.regie'
+    namespace 'com.wisedesign.wisesmartchurch'
     compileSdk 34
 
     defaultConfig {
