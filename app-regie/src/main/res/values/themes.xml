@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.WiseSmartChurch.Regie" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- Base theme – hérite AppCompat pour compatibilité Android 6+ (API 23) -->
+    <style name="Theme.WiseSmartChurch.Regie" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">#2563EB</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
-        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="colorPrimaryDark">#1E40AF</item>
+        <item name="colorAccent">#3B82F6</item>
+        <item name="android:statusBarColor">#1E40AF</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

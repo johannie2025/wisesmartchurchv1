@@ -17,6 +17,7 @@
 
     <!-- Service foreground -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!-- Régie = téléphone/tablette : tactile requis -->
@@ -50,7 +51,7 @@
         <service
             android:name=".service.EliteNetworkService"
             android:exported="false"
-            android:foregroundServiceType="specialUse"
+            android:foregroundServiceType="connectedDevice"
             tools:targetApi="34" />
 
         <receiver android:name=".service.BootReceiver" android:exported="true">
