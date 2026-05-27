@@ -25,7 +25,7 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
 import com.google.gson.Gson;
-import com.wisedesign.wisesmartchurch.R;
+import com.wisedesign.wisesmartchurch.display.R;
 import com.wisedesign.wisesmartchurch.data.model.BroadcastPacket;
 import com.wisedesign.wisesmartchurch.data.model.ScreenConfig;
 import com.wisedesign.wisesmartchurch.network.NsdDiscoveryManager;

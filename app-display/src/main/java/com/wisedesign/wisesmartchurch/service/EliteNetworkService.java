@@ -10,9 +10,9 @@ import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
 
 import com.wisedesign.wisesmartchurch.WiseSmartApp;
-import com.wisedesign.wisesmartchurch.R;
+import com.wisedesign.wisesmartchurch.display.R;
 import com.wisedesign.wisesmartchurch.network.EliteNetworkManager;
-import com.wisedesign.wisesmartchurch.ui.control.ControlActivity;
+import com.wisedesign.wisesmartchurch.ui.display.TvDisplayActivity;
 
 /**
  * Service Foreground qui maintient les serveurs HTTP + WebSocket
@@ -40,7 +40,7 @@ public class EliteNetworkService extends Service {
     }
 
     private Notification buildNotification(String text) {
-        Intent notifIntent = new Intent(this, ControlActivity.class);
+        Intent notifIntent = new Intent(this, TvDisplayActivity.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, notifIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 

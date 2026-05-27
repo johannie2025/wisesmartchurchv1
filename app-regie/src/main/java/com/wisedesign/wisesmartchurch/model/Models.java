@@ -9,7 +9,7 @@ import java.util.List;
 // ═══════════════════════════════════════════════════
 
 // ─── Configuration d'un écran connecté ───────────────
-class ScreenConfig {
+public class ScreenConfig {
     public static final String ROLE_MAIN          = "MAIN";         // Versets complets
     public static final String ROLE_LOWER_THIRD   = "LOWER_THIRD"; // Incrustation bas
     public static final String ROLE_STAGE_RETURN  = "STAGE_RETURN";// Retour scène
@@ -64,7 +64,7 @@ class ScreenConfig {
 }
 
 // ─── Paquet de commande WebSocket ────────────────────
-class BroadcastPacket {
+public class BroadcastPacket {
     public static final String CMD_VERSE        = "VERSE";
     public static final String CMD_CLEAR        = "CLEAR";
     public static final String CMD_MEDIA        = "MEDIA";
@@ -142,7 +142,7 @@ class BroadcastPacket {
 }
 
 // ─── Verset Biblique ─────────────────────────────────
-class BibleVerse {
+public class BibleVerse {
     @SerializedName("book")
     public String book;
 
@@ -167,7 +167,7 @@ class BibleVerse {
 }
 
 // ─── Diapositive de chanson ───────────────────────────
-class SongSlide {
+public class SongSlide {
     @SerializedName("slideIndex")
     public int slideIndex;
 
@@ -182,7 +182,7 @@ class SongSlide {
 }
 
 // ─── Chanson ──────────────────────────────────────────
-class Song {
+public class Song {
     @SerializedName("id")
     public String id;
 
@@ -203,7 +203,7 @@ class Song {
 }
 
 // ─── Élément de Playlist ─────────────────────────────
-class PlaylistItem {
+public class PlaylistItem {
     public static final String TYPE_VERSE   = "VERSE";
     public static final String TYPE_SONG    = "SONG";
     public static final String TYPE_MEDIA   = "MEDIA";
@@ -229,7 +229,7 @@ class PlaylistItem {
 }
 
 // ─── Événement / Service ────────────────────────────
-class EventSession {
+public class EventSession {
     @SerializedName("sessionId")
     public String sessionId;
 
