@@ -16,12 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.wisedesign.wisesmartchurch.R;
+import com.wisedesign.wisesmartchurch.regie.R;
 import com.wisedesign.wisesmartchurch.data.model.BroadcastPacket;
 import com.wisedesign.wisesmartchurch.data.model.ScreenConfig;
 import com.wisedesign.wisesmartchurch.network.EliteNetworkManager;
 import com.wisedesign.wisesmartchurch.service.EliteNetworkService;
-import com.wisedesign.wisesmartchurch.ui.display.TvDisplayActivity;
+
 import com.wisedesign.wisesmartchurch.util.LocaleHelper;
 
 import java.util.ArrayList;
@@ -247,9 +247,18 @@ public class ControlActivity extends AppCompatActivity
     }
 
     private void openDisplayMode() {
-        // Basculer cet appareil en mode écran d'affichage
-        Intent intent = new Intent(this, TvDisplayActivity.class);
-        startActivity(intent);
+        // Basculer vers l'application display (APK séparé)
+        try {
+            Intent intent = new Intent();
+            intent.setClassName(
+                "com.wisedesign.wisesmartchurch.display",
+                "com.wisedesign.wisesmartchurch.ui.display.TvDisplayActivity"
+            );
+            startActivity(intent);
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(this,
+                "Application Display non installée", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // ═══════════════════════════════════════════════
