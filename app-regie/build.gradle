@@ -58,7 +58,7 @@ dependencies {
     // NanoHTTPD – serveur HTTP embarqué pour l'interface web de régie
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
     // WebSocket serveur – envoie commandes aux écrans
-    implementation 'org.java-websocket:Java-WebSocket:1.5.4'
+    implementation 'org.java-websocket:Java-WebSocket:1.5.7'
     // NSD – découverte automatique des écrans display sur le réseau
     implementation 'androidx.room:room-runtime:2.6.1'
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
