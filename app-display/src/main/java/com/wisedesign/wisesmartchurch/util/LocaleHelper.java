@@ -1,4 +1,4 @@
-package com.wisedesign.elitecastpro.util;
+package com.wisedesign.wisesmartchurch.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

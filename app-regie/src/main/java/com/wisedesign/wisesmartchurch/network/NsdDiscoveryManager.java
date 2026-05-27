@@ -1,4 +1,4 @@
-package com.wisedesign.elitecastpro.network;
+package com.wisedesign.wisesmartchurch.network;
 
 import android.content.Context;
 import android.net.nsd.NsdManager;

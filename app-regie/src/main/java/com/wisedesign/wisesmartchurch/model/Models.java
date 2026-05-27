@@ -1,4 +1,4 @@
-package com.wisedesign.elitecastpro.data.model;
+package com.wisedesign.wisesmartchurch.data.model;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;

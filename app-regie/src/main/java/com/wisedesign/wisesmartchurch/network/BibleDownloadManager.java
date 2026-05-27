@@ -1,11 +1,11 @@
-package com.wisedesign.elitecastpro.data.repository;
+package com.wisedesign.wisesmartchurch.data.repository;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.wisedesign.elitecastpro.data.model.BibleVerse;
+import com.wisedesign.wisesmartchurch.data.model.BibleVerse;
 
 import java.io.File;
 import java.io.FileOutputStream;

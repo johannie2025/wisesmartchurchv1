@@ -1,4 +1,4 @@
-package com.wisedesign.elitecastpro.ui.display;
+package com.wisedesign.wisesmartchurch.ui.display;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -25,10 +25,10 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
 import com.google.gson.Gson;
-import com.wisedesign.elitecastpro.R;
-import com.wisedesign.elitecastpro.data.model.BroadcastPacket;
-import com.wisedesign.elitecastpro.data.model.ScreenConfig;
-import com.wisedesign.elitecastpro.network.NsdDiscoveryManager;
+import com.wisedesign.wisesmartchurch.R;
+import com.wisedesign.wisesmartchurch.data.model.BroadcastPacket;
+import com.wisedesign.wisesmartchurch.data.model.ScreenConfig;
+import com.wisedesign.wisesmartchurch.network.NsdDiscoveryManager;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;

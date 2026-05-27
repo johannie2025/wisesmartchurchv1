@@ -1,4 +1,4 @@
-package com.wisedesign.elitecastpro.ui.control;
+package com.wisedesign.wisesmartchurch.ui.control;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,13 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.wisedesign.elitecastpro.R;
-import com.wisedesign.elitecastpro.data.model.BroadcastPacket;
-import com.wisedesign.elitecastpro.data.model.ScreenConfig;
-import com.wisedesign.elitecastpro.network.EliteNetworkManager;
-import com.wisedesign.elitecastpro.service.EliteNetworkService;
-import com.wisedesign.elitecastpro.ui.display.TvDisplayActivity;
-import com.wisedesign.elitecastpro.util.LocaleHelper;
+import com.wisedesign.wisesmartchurch.R;
+import com.wisedesign.wisesmartchurch.data.model.BroadcastPacket;
+import com.wisedesign.wisesmartchurch.data.model.ScreenConfig;
+import com.wisedesign.wisesmartchurch.network.EliteNetworkManager;
+import com.wisedesign.wisesmartchurch.service.EliteNetworkService;
+import com.wisedesign.wisesmartchurch.ui.display.TvDisplayActivity;
+import com.wisedesign.wisesmartchurch.util.LocaleHelper;
 
 import java.util.ArrayList;
 import java.util.List;

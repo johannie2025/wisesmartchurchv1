@@ -1,4 +1,4 @@
-package com.wisedesign.elitecastpro;
+package com.wisedesign.wisesmartchurch;
 
 import android.app.Application;
 import android.app.NotificationChannel;
@@ -7,12 +7,12 @@ import android.os.Build;
 import androidx.multidex.MultiDex;
 import android.content.Context;
 
-public class EliteCastApp extends Application {
+public class WiseSmartApp extends Application {
 
     public static final String CHANNEL_ID_NETWORK = "elitecast_network";
     public static final String CHANNEL_ID_BROADCAST = "elitecast_broadcast";
 
-    private static EliteCastApp instance;
+    private static WiseSmartApp instance;
 
     @Override
     public void onCreate() {
@@ -27,7 +27,7 @@ public class EliteCastApp extends Application {
         MultiDex.install(this);
     }
 
-    public static EliteCastApp getInstance() {
+    public static WiseSmartApp getInstance() {
         return instance;
     }
 

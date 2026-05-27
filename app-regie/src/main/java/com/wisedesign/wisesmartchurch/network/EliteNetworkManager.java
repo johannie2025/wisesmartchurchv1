@@ -1,4 +1,4 @@
-package com.wisedesign.elitecastpro.network;
+package com.wisedesign.wisesmartchurch.network;
 
 import android.content.Context;
 import android.net.nsd.NsdManager;
@@ -10,8 +10,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.wisedesign.elitecastpro.data.model.BroadcastPacket;
-import com.wisedesign.elitecastpro.data.model.ScreenConfig;
+import com.wisedesign.wisesmartchurch.data.model.BroadcastPacket;
+import com.wisedesign.wisesmartchurch.data.model.ScreenConfig;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;

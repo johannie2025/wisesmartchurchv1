@@ -1,4 +1,4 @@
-package com.wisedesign.elitecastpro.service;
+package com.wisedesign.wisesmartchurch.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -9,10 +9,10 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
-import com.wisedesign.elitecastpro.EliteCastApp;
-import com.wisedesign.elitecastpro.R;
-import com.wisedesign.elitecastpro.network.EliteNetworkManager;
-import com.wisedesign.elitecastpro.ui.control.ControlActivity;
+import com.wisedesign.wisesmartchurch.EliteCastApp;
+import com.wisedesign.wisesmartchurch.R;
+import com.wisedesign.wisesmartchurch.network.EliteNetworkManager;
+import com.wisedesign.wisesmartchurch.ui.control.ControlActivity;
 
 /**
  * Service Foreground qui maintient les serveurs HTTP + WebSocket
