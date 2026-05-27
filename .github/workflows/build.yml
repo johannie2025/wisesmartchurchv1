@@ -10,7 +10,6 @@ on:
 
 env:
   JAVA_VERSION: '17'
-  GRADLE_CACHE_KEY: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
 jobs:
   # ═══════════════════════════════════════════
@@ -32,7 +31,7 @@ jobs:
           path: | 
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ env.GRADLE_CACHE_KEY }}
+          key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: gradle-
 
       - run: chmod +x gradlew
@@ -70,7 +69,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ env.GRADLE_CACHE_KEY }}
+          key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: gradle-
 
       - run: chmod +x gradlew
@@ -101,7 +100,8 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ env.GRADLE_CACHE_KEY }}
+          key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: gradle-
 
       - name: 🔑 Decode Keystore
         env: { KEYSTORE_BASE64: '${{ secrets.KEYSTORE_BASE64 }}' }
@@ -176,7 +176,7 @@ jobs:
             - Trilingue FR/EN/ES | 100% offline (sauf téléchargement initial Bibles)
 
             ---
-            **Wise Design** | Prophète Josias | WhatsApp: +240 555 445 514
+            **Wise Design** | Prophète Josias
           files: |
             app-display/build/outputs/apk/release/*.apk
             app-regie/build/outputs/apk/release/*.apk
