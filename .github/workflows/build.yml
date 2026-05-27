@@ -1,0 +1,208 @@
+name: Wise Smart Church – Build & Release
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  JAVA_VERSION: '17'
+  GRADLE_CACHE_KEY: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
+jobs:
+  # ═══════════════════════════════════════════
+  #  DEBUG – APK Display (Smart TV / Android Box)
+  # ═══════════════════════════════════════════
+  build-display-debug:
+    name: 📺 Build Display APK (Debug)
+    runs-on: ubuntu-latest
+    if: github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-java@v4
+        with: { java-version: '${{ env.JAVA_VERSION }}', distribution: 'temurin', cache: 'gradle' }
+      - uses: android-actions/setup-android@v3
+      - uses: actions/cache@v4
+        with:
+          path: | 
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ env.GRADLE_CACHE_KEY }}
+          restore-keys: gradle-
+
+      - run: chmod +x gradlew
+      - run: ./gradlew :app-display:clean :app-display:assembleDebug --no-daemon --stacktrace
+        env: { ANDROID_SDK_ROOT: '${{ env.ANDROID_HOME }}' }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WiseSmartChurch-Display-debug-arm64
+          path: app-display/build/outputs/apk/debug/*arm64*.apk
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WiseSmartChurch-Display-debug-armv7
+          path: app-display/build/outputs/apk/debug/*armeabi*.apk
+          retention-days: 7
+
+  # ═══════════════════════════════════════════
+  #  DEBUG – APK Régie (Téléphone / Tablette)
+  # ═══════════════════════════════════════════
+  build-regie-debug:
+    name: 🎛️ Build Régie APK (Debug)
+    runs-on: ubuntu-latest
+    if: github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-java@v4
+        with: { java-version: '${{ env.JAVA_VERSION }}', distribution: 'temurin', cache: 'gradle' }
+      - uses: android-actions/setup-android@v3
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ env.GRADLE_CACHE_KEY }}
+          restore-keys: gradle-
+
+      - run: chmod +x gradlew
+      - run: ./gradlew :app-regie:clean :app-regie:assembleDebug --no-daemon --stacktrace
+        env: { ANDROID_SDK_ROOT: '${{ env.ANDROID_HOME }}' }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WiseSmartChurch-Regie-debug-universal
+          path: app-regie/build/outputs/apk/debug/*.apk
+          retention-days: 7
+
+  # ═══════════════════════════════════════════
+  #  RELEASE – 2 APKs signés (sur tag v*.*.*)
+  # ═══════════════════════════════════════════
+  build-release:
+    name: 🚀 Build Release (Display + Régie)
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { java-version: '${{ env.JAVA_VERSION }}', distribution: 'temurin', cache: 'gradle' }
+      - uses: android-actions/setup-android@v3
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ env.GRADLE_CACHE_KEY }}
+
+      - name: 🔑 Decode Keystore
+        env: { KEYSTORE_BASE64: '${{ secrets.KEYSTORE_BASE64 }}' }
+        run: echo "$KEYSTORE_BASE64" | base64 --decode > keystore.jks
+
+      - run: chmod +x gradlew
+
+      - name: 📺 Build Display Release APK
+        run: ./gradlew :app-display:assembleRelease --no-daemon
+        env:
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
+          KEYSTORE_PATH: ${{ github.workspace }}/keystore.jks
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+
+      - name: 🎛️ Build Régie Release APK
+        run: ./gradlew :app-regie:assembleRelease --no-daemon
+        env:
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
+          KEYSTORE_PATH: ${{ github.workspace }}/keystore.jks
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+
+      - name: 📋 Get Version
+        id: version
+        run: |
+          VERSION=$(./gradlew -q :app-display:printVersionName 2>/dev/null || echo ${{ github.ref_name }})
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WiseSmartChurch-${{ steps.version.outputs.version }}-Display-arm64
+          path: app-display/build/outputs/apk/release/*arm64*.apk
+          retention-days: 90
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WiseSmartChurch-${{ steps.version.outputs.version }}-Display-armv7
+          path: app-display/build/outputs/apk/release/*armeabi*.apk
+          retention-days: 90
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WiseSmartChurch-${{ steps.version.outputs.version }}-Regie
+          path: app-regie/build/outputs/apk/release/*.apk
+          retention-days: 90
+
+      - name: 🏷️ Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Wise Smart Church ${{ github.ref_name }}"
+          body: |
+            ## ⛪ Wise Smart Church ${{ github.ref_name }}
+            **Système de régie TV et diffusion Live pour l'église**
+
+            ### 📦 APK Display – Smart TV / Android Box
+            Installer sur les écrans/projecteurs de la salle.
+            - `Display-arm64.apk` → Android Box récentes (64-bit)
+            - `Display-armv7.apk` → Android Box plus anciennes (32-bit)
+
+            ### 📱 APK Régie – Téléphone / Tablette
+            Installer sur le téléphone du responsable de régie.
+            - `Regie-universal.apk` → Compatible tous téléphones Android
+
+            ### ✅ Fonctionnalités
+            - Serveur HTTP embarqué (port 8080) + WebSocket (port 8081) <10ms
+            - Découverte automatique NSD/mDNS des écrans sur le réseau
+            - ExoPlayer multi-couches (RTSP, HLS, local)
+            - Trilingue FR/EN/ES | 100% offline (sauf téléchargement initial Bibles)
+
+            ---
+            **Wise Design** | Prophète Josias | WhatsApp: +240 555 445 514
+          files: |
+            app-display/build/outputs/apk/release/*.apk
+            app-regie/build/outputs/apk/release/*.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ═══════════════════════════════════════════
+  #  LINT
+  # ═══════════════════════════════════════════
+  lint:
+    name: 🔍 Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { java-version: '${{ env.JAVA_VERSION }}', distribution: 'temurin' }
+      - uses: android-actions/setup-android@v3
+      - run: chmod +x gradlew
+      - run: ./gradlew :app-display:lintDebug :app-regie:lintDebug --no-daemon
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lint-reports
+          path: |
+            app-display/build/reports/lint-results-debug.html
+            app-regie/build/reports/lint-results-debug.html
+          retention-days: 7

@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>EliteCast Pro – Régie</title>
+<style>
+/* ═══════════════════════════════════════════════════════
+   ELITECAST PRO – Interface Web de Régie
+   Design : Bleu Marine profond + Blanc + Rouge accent
+   Wise Design – Prophète Josias
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg-deep:     #050d1a;
+  --bg-panel:    #0b1a2e;
+  --bg-card:     #112240;
+  --bg-elevated: #1a3055;
+  --accent-blue: #1565C0;
+  --accent-mid:  #1E88E5;
+  --accent-light:#42A5F5;
+  --accent-red:  #D32F2F;
+  --accent-red2: #FF1744;
+  --text-white:  #F0F4FF;
+  --text-light:  #90A4AE;
+  --text-dim:    #546E7A;
+  --border:      #1a3055;
+  --border-glow: rgba(30, 136, 229, 0.3);
+  --success:     #00C853;
+  --warning:     #FFB300;
+  --font-display:'Rajdhani', sans-serif;
+  --font-body:   'Inter', sans-serif;
+  --radius:      8px;
+  --radius-lg:   12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg-deep);
+  color: var(--text-white);
+  font-family: var(--font-body);
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ── TOPBAR ─────────────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 20px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-white);
+}
+.logo span { color: var(--accent-red2); }
+.logo-icon { width: 28px; height: 28px; }
+
+.topbar-center { display: flex; align-items: center; gap: 12px; }
+
+.server-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: var(--text-light);
+  font-family: 'Courier New', monospace;
+  background: var(--bg-deep);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+}
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  transition: background 0.3s;
+  flex-shrink: 0;
+}
+.status-dot.online  { background: var(--success); box-shadow: 0 0 6px var(--success); }
+.status-dot.offline { background: var(--accent-red2); }
+
+.screen-badges { display: flex; gap: 5px; flex-wrap: wrap; max-width: 300px; }
+.screen-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  background: var(--bg-card);
+  border: 1px solid var(--accent-blue);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.screen-badge:hover { background: var(--accent-blue); }
+.screen-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--success); }
+
+.lang-switcher { display: flex; gap: 4px; }
+.lang-btn {
+  padding: 4px 9px;
+  border-radius: 4px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-light);
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.lang-btn.active, .lang-btn:hover { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+
+/* ── LAYOUT PRINCIPAL ───────────────────────────── */
+.app-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  grid-template-rows: 1fr;
+  height: calc(100vh - 52px);
+  overflow: hidden;
+}
+
+/* ── SIDEBAR GAUCHE – Navigation ───────────────── */
+.sidebar {
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+}
+.tab-btn {
+  flex: 1;
+  padding: 10px 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.tab-btn .tab-icon { font-size: 1.1rem; }
+.tab-btn.active { color: var(--accent-light); border-bottom-color: var(--accent-light); background: rgba(30,136,229,0.05); }
+.tab-btn:hover:not(.active) { color: var(--text-light); background: rgba(255,255,255,0.02); }
+
+.sidebar-content { flex: 1; overflow-y: auto; padding: 12px; }
+.sidebar-content::-webkit-scrollbar { width: 4px; }
+.sidebar-content::-webkit-scrollbar-track { background: transparent; }
+.sidebar-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── BIBLE PANEL ───────────────────────────────── */
+.search-box {
+  position: relative;
+  margin-bottom: 12px;
+}
+.search-box input {
+  width: 100%;
+  padding: 9px 12px 9px 36px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-white);
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-box input:focus { border-color: var(--accent-mid); }
+.search-box .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 0.9rem; }
+
+.bible-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.bible-select {
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-white);
+  font-size: 0.75rem;
+  padding: 6px 8px;
+  outline: none;
+  cursor: pointer;
+}
+
+.verse-list { display: flex; flex-direction: column; gap: 4px; }
+.verse-item {
+  padding: 10px 12px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.verse-item:hover { background: var(--bg-elevated); border-left-color: var(--accent-light); }
+.verse-item.active { background: rgba(30,136,229,0.15); border-left-color: var(--accent-light); border-color: var(--accent-blue); }
+.verse-ref { font-size: 0.68rem; font-weight: 700; color: var(--accent-light); margin-bottom: 3px; font-family: var(--font-display); letter-spacing: 0.5px; }
+.verse-preview { font-size: 0.77rem; color: var(--text-light); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Livres de la Bible */
+.books-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 12px; }
+.book-btn {
+  padding: 6px 4px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-light);
+  font-size: 0.65rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.book-btn:hover, .book-btn.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+
+/* ── SONGS PANEL ───────────────────────────────── */
+.song-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 5px;
+}
+.song-card:hover { background: var(--bg-elevated); border-color: var(--accent-blue); }
+.song-card.active { border-color: var(--accent-light); background: rgba(30,136,229,0.1); }
+.song-icon { font-size: 1.3rem; flex-shrink: 0; }
+.song-info .song-title { font-size: 0.83rem; font-weight: 600; margin-bottom: 2px; }
+.song-info .song-meta { font-size: 0.68rem; color: var(--text-light); }
+
+/* Slides de la chanson */
+.slides-nav { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+.slide-btn {
+  padding: 8px 12px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-light);
+  font-size: 0.75rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.slide-btn .slide-type { font-size: 0.6rem; padding: 1px 5px; border-radius: 3px; font-weight: 700; text-transform: uppercase; flex-shrink: 0; }
+.slide-btn.chorus .slide-type { background: rgba(255,23,68,0.3); color: var(--accent-red2); }
+.slide-btn.verse  .slide-type { background: rgba(21,101,192,0.3); color: var(--accent-light); }
+.slide-btn.bridge .slide-type { background: rgba(0,200,83,0.2); color: var(--success); }
+.slide-btn:hover, .slide-btn.active { background: var(--bg-elevated); border-color: var(--accent-blue); color: var(--text-white); }
+
+/* ── MEDIA PANEL ───────────────────────────────── */
+.media-section-title { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 8px; margin-top: 14px; }
+.media-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 5px;
+}
+.media-card:hover { background: var(--bg-elevated); border-color: var(--accent-blue); }
+.media-card .media-icon { font-size: 1.4rem; flex-shrink: 0; }
+.media-card .media-name { font-size: 0.78rem; font-weight: 500; }
+.media-card .media-type { font-size: 0.62rem; color: var(--text-dim); margin-top: 2px; }
+
+.rtsp-input {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.rtsp-input input {
+  flex: 1;
+  padding: 7px 10px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-white);
+  font-size: 0.75rem;
+  font-family: monospace;
+  outline: none;
+}
+.rtsp-input input:focus { border-color: var(--accent-mid); }
+
+/* ── ZONE CENTRALE – PROGRAMME ──────────────────── */
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-deep);
+}
+
+.center-top {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-white);
+}
+
+/* Aperçu projection */
+.preview-zone {
+  margin: 14px 16px;
+  flex-shrink: 0;
+}
+.preview-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 6px; font-weight: 600; }
+.preview-screen {
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  aspect-ratio: 16/9;
+  position: relative;
+  overflow: hidden;
+  max-height: 160px;
+}
+.preview-video-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #0a1628, #1a2a4a);
+  display: flex; align-items: center; justify-content: center;
+}
+.preview-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.45); }
+.preview-text-container {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 12px 16px;
+  text-align: center;
+}
+.preview-verse-text {
+  font-size: 0.82rem;
+  color: #fff;
+  line-height: 1.5;
+  font-weight: 300;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.8);
+  transition: all 0.4s;
+}
+.preview-verse-ref {
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.6);
+  margin-top: 6px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.preview-lower-third {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(0,26,75,0.9);
+  padding: 5px 10px;
+  border-left: 3px solid var(--accent-red2);
+  display: none;
+}
+.preview-lower-title { font-size: 0.7rem; font-weight: 700; color: #fff; }
+.preview-lower-sub { font-size: 0.55rem; color: rgba(255,255,255,0.7); }
+.preview-multi { display: none; }
+
+.preview-multi-screens {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 6px;
+  margin: 0 16px 14px;
+  flex-shrink: 0;
+}
+.mini-screen {
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  aspect-ratio: 16/9;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mini-screen:hover { border-color: var(--accent-light); }
+.mini-screen.selected { border-color: var(--accent-light); box-shadow: 0 0 8px var(--border-glow); }
+.mini-screen .screen-name {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,0.7);
+  font-size: 0.5rem;
+  padding: 2px 4px;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mini-screen .screen-role-badge {
+  position: absolute; top: 2px; left: 2px;
+  font-size: 0.42rem;
+  padding: 1px 4px;
+  border-radius: 2px;
+  background: var(--accent-blue);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Playlist programme */
+.playlist-zone {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 16px 14px;
+}
+.playlist-zone::-webkit-scrollbar { width: 4px; }
+.playlist-zone::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.playlist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+  margin-bottom: 4px;
+}
+.playlist-item:hover { background: var(--bg-card); }
+.playlist-item.active { background: rgba(30,136,229,0.15); border-color: var(--accent-blue); }
+.playlist-item .item-num { font-size: 0.7rem; color: var(--text-dim); font-family: monospace; min-width: 24px; }
+.playlist-item .item-icon { font-size: 1rem; flex-shrink: 0; }
+.playlist-item .item-text { flex: 1; }
+.playlist-item .item-title { font-size: 0.82rem; font-weight: 500; }
+.playlist-item .item-sub { font-size: 0.68rem; color: var(--text-dim); margin-top: 1px; }
+.playlist-item .item-actions { display: flex; gap: 4px; opacity: 0; transition: opacity 0.15s; }
+.playlist-item:hover .item-actions { opacity: 1; }
+
+/* ── SIDEBAR DROITE – CONTRÔLES ─────────────────── */
+.right-panel {
+  background: var(--bg-panel);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.control-section { padding: 14px 14px 0; flex-shrink: 0; }
+.control-title { font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 10px; }
+
+/* Boutons LIVE ──────────── */
+.live-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary { background: var(--accent-blue); color: #fff; border-color: var(--accent-mid); }
+.btn-primary:hover { background: var(--accent-mid); box-shadow: 0 0 14px rgba(30,136,229,0.4); }
+
+.btn-danger { background: var(--accent-red); color: #fff; border-color: var(--accent-red2); }
+.btn-danger:hover { background: var(--accent-red2); box-shadow: 0 0 14px rgba(255,23,68,0.4); }
+
+.btn-send {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #1565C0, #0D47A1);
+  color: #fff;
+  padding: 14px;
+  font-size: 0.95rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent-mid);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-send:hover { background: linear-gradient(135deg, #1976D2, #1565C0); box-shadow: 0 4px 20px rgba(21,101,192,0.5); transform: translateY(-1px); }
+.btn-send:active { transform: translateY(0); }
+
+.btn-sm {
+  padding: 6px 10px;
+  font-size: 0.72rem;
+  border-radius: 5px;
+}
+
+.btn-ghost { background: transparent; color: var(--text-light); border-color: var(--border); }
+.btn-ghost:hover { background: var(--bg-card); border-color: var(--accent-blue); color: var(--text-white); }
+
+.btn-icon-only {
+  width: 28px; height: 28px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-icon-only:hover { background: var(--bg-elevated); border-color: var(--accent-blue); color: var(--text-white); }
+
+/* Transitions ──────────── */
+.transition-btns { display: flex; gap: 6px; margin-bottom: 14px; }
+.transition-btn {
+  flex: 1;
+  padding: 7px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+.transition-btn:hover, .transition-btn.active { background: var(--bg-elevated); border-color: var(--accent-blue); color: var(--accent-light); }
+
+/* Lower Third ──────────── */
+.lower-third-inputs { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.lower-third-inputs input {
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-white);
+  font-size: 0.78rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.lower-third-inputs input:focus { border-color: var(--accent-mid); }
+.lower-third-inputs input::placeholder { color: var(--text-dim); }
+
+/* Écrans targets ─────────── */
+.target-screens { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.target-chip {
+  padding: 4px 9px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text-light);
+}
+.target-chip:hover { border-color: var(--accent-blue); }
+.target-chip.selected { background: var(--accent-blue); border-color: var(--accent-blue); color: #fff; }
+
+/* Separateur ────────────── */
+.divider { height: 1px; background: var(--border); margin: 12px 0; }
+
+/* Journal en direct ─────── */
+.log-section {
+  flex: 1;
+  overflow: hidden;
+  padding: 0 14px 14px;
+  display: flex;
+  flex-direction: column;
+}
+.log-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.log-box {
+  flex: 1;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+}
+.log-box::-webkit-scrollbar { width: 3px; }
+.log-box::-webkit-scrollbar-thumb { background: var(--border); }
+.log-entry { padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.03); line-height: 1.4; }
+.log-entry .log-time { color: var(--text-dim); margin-right: 6px; }
+.log-entry .log-ok { color: var(--success); }
+.log-entry .log-warn { color: var(--warning); }
+.log-entry .log-err { color: var(--accent-red2); }
+.log-entry .log-info { color: var(--accent-light); }
+
+/* Bible version pills */
+.version-pills { display: flex; gap: 5px; margin-bottom: 10px; flex-wrap: wrap; }
+.version-pill {
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  color: var(--text-light);
+  background: var(--bg-deep);
+  transition: all 0.15s;
+}
+.version-pill.active { background: rgba(30,136,229,0.25); border-color: var(--accent-mid); color: var(--accent-light); }
+
+/* Download banner */
+.download-banner {
+  background: rgba(255,183,0,0.1);
+  border: 1px solid rgba(255,183,0,0.3);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  font-size: 0.75rem;
+  color: var(--warning);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.download-banner:hover { background: rgba(255,183,0,0.2); }
+
+/* Scrollbar global */
+* { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+
+/* Animation pulse connexion */
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.pulse { animation: pulse 1.5s infinite; }
+
+/* Toast notifications */
+.toast-container { position: fixed; top: 60px; right: 16px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  color: var(--text-white);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  animation: slideIn 0.2s ease;
+  max-width: 280px;
+}
+.toast.success { border-left: 3px solid var(--success); }
+.toast.error { border-left: 3px solid var(--accent-red2); }
+.toast.info { border-left: 3px solid var(--accent-light); }
+@keyframes slideIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+
+/* Modal */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 500px;
+  max-width: 95vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.modal-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+
+/* Range input */
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+  margin: 8px 0;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent-mid);
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .app-layout { grid-template-columns: 240px 1fr; }
+  .right-panel { display: none; }
+}
+@media (max-width: 600px) {
+  .app-layout { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .sidebar { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  BARRE DE TITRE                                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="topbar">
+  <div class="logo">
+    <svg class="logo-icon" viewBox="0 0 28 28" fill="none">
+      <rect width="28" height="28" rx="6" fill="#1565C0"/>
+      <path d="M8 8L20 14L8 20V8Z" fill="white"/>
+      <circle cx="22" cy="8" r="3" fill="#FF1744"/>
+    </svg>
+    ELITE<span>CAST</span> PRO
+  </div>
+
+  <div class="topbar-center">
+    <div class="server-info">
+      <div class="status-dot" id="ws-dot"></div>
+      <span id="ws-status">Connexion…</span>
+    </div>
+    <div class="server-info" id="http-info" style="display:none">
+      🌐 <span id="http-url">–</span>
+    </div>
+    <div class="screen-badges" id="screen-badges">
+      <span style="font-size:0.65rem;color:var(--text-dim)">Aucun écran</span>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="openBibleManager()">📖 Bibles</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  LAYOUT PRINCIPAL                                   -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="app-layout">
+
+  <!-- ─── SIDEBAR GAUCHE ─────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-tabs">
+      <button class="tab-btn active" onclick="switchTab('bible', this)">
+        <span class="tab-icon">📖</span>
+        <span data-i18n="Bible">Bible</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('songs', this)">
+        <span class="tab-icon">🎵</span>
+        <span data-i18n="Chants">Chants</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('media', this)">
+        <span class="tab-icon">🎬</span>
+        <span data-i18n="Média">Média</span>
+      </button>
+    </div>
+
+    <div class="sidebar-content">
+
+      <!-- ── PANNEAU BIBLE ── -->
+      <div class="panel active" id="panel-bible">
+        <div class="version-pills" id="version-pills">
+          <div class="version-pill active" onclick="selectVersion('lsg', this)">LSG</div>
+          <div class="version-pill" onclick="selectVersion('nbs', this)">NBS</div>
+          <div class="version-pill" onclick="selectVersion('rvr60', this)">RVR60</div>
+          <div class="version-pill" onclick="selectVersion('kjv', this)">KJV</div>
+        </div>
+
+        <div class="download-banner" id="dl-banner" onclick="openBibleManager()">
+          ⬇️ <span data-i18n="Télécharger les versions de Bible (FR/ES/EN)">Télécharger les versions (FR/ES/EN)</span>
+        </div>
+
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="verse-search" placeholder="Rechercher un verset…" oninput="searchVerses(this.value)">
+        </div>
+
+        <div class="bible-nav">
+          <select class="bible-select" id="book-select" onchange="loadChapter()">
+            <option value="">Livre…</option>
+          </select>
+          <select class="bible-select" id="chapter-select" onchange="loadVerses()">
+            <option value="">Chapitre…</option>
+          </select>
+        </div>
+
+        <div class="verse-list" id="verse-list">
+          <!-- Versets générés dynamiquement -->
+          <div style="text-align:center;padding:20px;color:var(--text-dim);font-size:0.75rem">
+            📖 Sélectionnez un livre et un chapitre
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANNEAU CHANTS ── -->
+      <div class="panel" id="panel-songs">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Rechercher un chant…" oninput="filterSongs(this.value)">
+        </div>
+        <div id="songs-list">
+          <!-- Exemple de chants -->
+        </div>
+        <div id="song-slides" style="display:none"></div>
+      </div>
+
+      <!-- ── PANNEAU MÉDIA ── -->
+      <div class="panel" id="panel-media">
+        <div class="media-section-title" data-i18n="Fond Vidéo">🎬 Fond Vidéo</div>
+        <div id="media-list">
+          <div class="media-card" onclick="sendMedia('loop_worship.mp4', 'VIDEO')">
+            <span class="media-icon">🎦</span>
+            <div>
+              <div class="media-name">Loop Adoration</div>
+              <div class="media-type">Vidéo locale</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="media-section-title">📡 Flux en direct (RTSP/RTMP)</div>
+        <div class="rtsp-input">
+          <input type="text" id="rtsp-url" placeholder="rtsp://192.168.1.x:554/live">
+          <button class="btn btn-primary btn-sm" onclick="sendRtspStream()">▶</button>
+        </div>
+
+        <div class="media-section-title">⏹ Contrôle</div>
+        <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:4px" onclick="sendCmd('MEDIA_STOP', null)">
+          ⏹ <span data-i18n="Arrêter le fond">Arrêter le fond</span>
+        </button>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ─── ZONE CENTRALE ──────────────────────────── -->
+  <main class="center-panel">
+
+    <div class="center-top">
+      <span class="section-title" data-i18n="Aperçu Projection">📺 Aperçu Projection</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="toggleMultiPreview()">⊞ Multi-écrans</button>
+        <button class="btn btn-ghost btn-sm" onclick="openSession()">📋 Programme</button>
+      </div>
+    </div>
+
+    <!-- Aperçu unique -->
+    <div class="preview-zone" id="preview-zone-single">
+      <div class="preview-label" data-i18n="Sortie Live">🔴 Sortie Live – Écran Principal</div>
+      <div class="preview-screen">
+        <div class="preview-video-bg">
+          <span style="font-size:2rem;opacity:0.1">🎬</span>
+        </div>
+        <div class="preview-overlay"></div>
+        <div class="preview-text-container">
+          <div class="preview-verse-text" id="prev-verse-text" style="color:#fff"></div>
+          <div class="preview-verse-ref" id="prev-verse-ref"></div>
+        </div>
+        <div class="preview-lower-third" id="prev-lower">
+          <div class="preview-lower-title" id="prev-lower-title"></div>
+          <div class="preview-lower-sub" id="prev-lower-sub"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aperçu multi-écrans -->
+    <div class="preview-multi-screens" id="preview-multi" style="display:none">
+      <!-- Écrans miniatures générés dynamiquement -->
+    </div>
+
+    <!-- Playlist programme -->
+    <div class="center-top" style="padding-top:8px">
+      <span class="section-title" data-i18n="Programme">📋 Programme du Service</span>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" onclick="addPlaylistItem()">+ Ajouter</button>
+        <button class="btn btn-ghost btn-sm" onclick="clearPlaylist()">🗑</button>
+      </div>
+    </div>
+    <div class="playlist-zone" id="playlist-zone">
+      <div style="text-align:center;padding:30px;color:var(--text-dim);font-size:0.8rem">
+        <div style="font-size:2rem;margin-bottom:8px">📋</div>
+        Votre programme est vide.<br>Ajoutez des versets, chants ou médias.
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ─── PANNEAU DROIT – CONTRÔLES ──────────────── -->
+  <aside class="right-panel">
+
+    <div class="control-section">
+      <div class="control-title" data-i18n="Action Rapide">⚡ Action Rapide</div>
+
+      <button class="btn-send" onclick="sendCurrentContent()">
+        📡 <span data-i18n="DIFFUSER MAINTENANT">DIFFUSER MAINTENANT</span>
+      </button>
+
+      <div style="height:8px"></div>
+
+      <div class="live-actions">
+        <button class="btn btn-ghost btn-sm" onclick="sendCmd('CLEAR', null)">
+          🔲 <span data-i18n="Effacer">Effacer</span>
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="blackout()">
+          ⬛ <span data-i18n="Noir">Noir</span>
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="prevItem()">
+          ◀ <span data-i18n="Préc.">Préc.</span>
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="nextItem()">
+          <span data-i18n="Suiv.">Suiv.</span> ▶
+        </button>
+      </div>
+    </div>
+
+    <div class="divider" style="margin:12px 14px 0"></div>
+
+    <div class="control-section">
+      <div class="control-title" data-i18n="Transition">🎞 Transition</div>
+      <div class="transition-btns">
+        <div class="transition-btn active" onclick="selectTransition('FADE', this)">Fondu</div>
+        <div class="transition-btn" onclick="selectTransition('SLIDE_LEFT', this)">Glisse</div>
+        <div class="transition-btn" onclick="selectTransition('SLIDE_UP', this)">Haut</div>
+        <div class="transition-btn" onclick="selectTransition('NONE', this)">Coupé</div>
+      </div>
+    </div>
+
+    <div class="control-section">
+      <div class="control-title" data-i18n="Banc-Titre (Lower-Third)">📝 Banc-Titre</div>
+      <div class="lower-third-inputs">
+        <input type="text" id="lt-title" placeholder="Titre principal…">
+        <input type="text" id="lt-subtitle" placeholder="Sous-titre / Rôle…">
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-primary btn-sm" style="flex:1" onclick="sendLowerThird()">▶ Afficher</button>
+        <button class="btn btn-ghost btn-sm" onclick="hideLowerThird()">✕</button>
+      </div>
+
+      <!-- Préréglages rapides -->
+      <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px">
+        <div class="target-chip" onclick="quickLowerThird('Pasteur', 'Prédicateur')">👤 Pasteur</div>
+        <div class="target-chip" onclick="quickLowerThird('Chorale', 'Équipe Louange')">🎵 Chorale</div>
+        <div class="target-chip" onclick="quickLowerThird('Annonce', '')">📢 Annonce</div>
+      </div>
+    </div>
+
+    <div class="control-section">
+      <div class="control-title" data-i18n="Écran Cible">🎯 Écran Cible</div>
+      <div class="target-screens" id="target-screens">
+        <div class="target-chip selected" data-target="all" onclick="selectTarget('all', this)">Tous</div>
+      </div>
+    </div>
+
+    <div class="divider" style="margin:8px 14px 0"></div>
+
+    <div class="log-section">
+      <div class="log-header">
+        <span class="control-title" style="margin-bottom:0" data-i18n="Journal">📋 Journal</span>
+        <button class="btn-icon-only" onclick="clearLog()">🗑</button>
+      </div>
+      <div class="log-box" id="log-box"></div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  TOASTS                                             -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  MODAL BIBLES                                       -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="bible-modal">
+  <div class="modal">
+    <div class="modal-title">
+      📖 <span data-i18n="Gestion des Bibles">Gestion des Bibles</span>
+      <button class="btn-icon-only" onclick="closeBibleManager()">✕</button>
+    </div>
+    <div id="bible-versions-list">
+      <!-- Dynamique -->
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  JAVASCRIPT PRINCIPAL                               -->
+<!-- ═══════════════════════════════════════════════════ -->
+<script>
+'use strict';
+// ─────────────────────────────────────────────────────
+//  CONFIG – HOST injecté par NanoHTTPD
+// ─────────────────────────────────────────────────────
+const WS_HOST   = '{{WS_HOST}}';
+const HTTP_HOST = '{{HTTP_HOST}}';
+const WS_URL    = `ws://${WS_HOST}:8081`;
+const API_BASE  = `http://${HTTP_HOST}:8080/api`;
+
+// ─────────────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────────────
+const state = {
+  ws: null,
+  connected: false,
+  screens: {},
+  currentVerse: { text: '', ref: '' },
+  currentTransition: 'FADE',
+  currentTarget: null, // null = all
+  lang: localStorage.getItem('lang') || 'fr',
+  bibleVersion: 'lsg',
+  bibleData: null,
+  playlistItems: [],
+  playlistIndex: -1,
+  reconnectTimer: null,
+};
+
+const i18n = {
+  fr: {
+    'Bible': 'Bible', 'Chants': 'Chants', 'Média': 'Média',
+    'Aperçu Projection': 'Aperçu Projection',
+    'DIFFUSER MAINTENANT': 'DIFFUSER MAINTENANT',
+    'Effacer': 'Effacer', 'Noir': 'Noir', 'Préc.': 'Préc.', 'Suiv.': 'Suiv.',
+    'Transition': 'Transition',
+    'Banc-Titre (Lower-Third)': 'Banc-Titre',
+    'Écran Cible': 'Écran Cible', 'Journal': 'Journal',
+    'Programme': 'Programme du Service',
+    'Télécharger les versions de Bible (FR/ES/EN)': 'Télécharger Bibles (FR/ES/EN)',
+    'Sortie Live': '🔴 Sortie Live',
+    'Fond Vidéo': '🎬 Fond Vidéo', 'Arrêter le fond': 'Arrêter le fond',
+    'Gestion des Bibles': 'Gestion des Bibles',
+    'Action Rapide': '⚡ Action Rapide',
+  },
+  en: {
+    'Bible': 'Bible', 'Chants': 'Songs', 'Média': 'Media',
+    'Aperçu Projection': 'Live Preview',
+    'DIFFUSER MAINTENANT': 'BROADCAST NOW',
+    'Effacer': 'Clear', 'Noir': 'Black', 'Préc.': 'Prev', 'Suiv.': 'Next',
+    'Transition': 'Transition',
+    'Banc-Titre (Lower-Third)': 'Lower Third',
+    'Écran Cible': 'Target Screen', 'Journal': 'Log',
+    'Programme': 'Service Order',
+    'Télécharger les versions de Bible (FR/ES/EN)': 'Download Bibles (FR/ES/EN)',
+    'Sortie Live': '🔴 Live Output',
+    'Fond Vidéo': '🎬 Background Video', 'Arrêter le fond': 'Stop background',
+    'Gestion des Bibles': 'Bible Manager',
+    'Action Rapide': '⚡ Quick Action',
+  },
+  es: {
+    'Bible': 'Biblia', 'Chants': 'Cantos', 'Média': 'Medios',
+    'Aperçu Projection': 'Vista Previa',
+    'DIFFUSER MAINTENANT': 'TRANSMITIR AHORA',
+    'Effacer': 'Borrar', 'Noir': 'Negro', 'Préc.': 'Ant.', 'Suiv.': 'Sig.',
+    'Transition': 'Transición',
+    'Banc-Titre (Lower-Third)': 'Barra Inferior',
+    'Écran Cible': 'Pantalla Destino', 'Journal': 'Registro',
+    'Programme': 'Orden del Servicio',
+    'Télécharger les versions de Bible (FR/ES/EN)': 'Descargar Biblias (FR/ES/EN)',
+    'Sortie Live': '🔴 Salida en Vivo',
+    'Fond Vidéo': '🎬 Fondo de Vídeo', 'Arrêter le fond': 'Detener fondo',
+    'Gestion des Bibles': 'Gestión de Biblias',
+    'Action Rapide': '⚡ Acción Rápida',
+  }
+};
+
+// ─────────────────────────────────────────────────────
+//  WEBSOCKET
+// ─────────────────────────────────────────────────────
+function connectWS() {
+  log('info', `Connexion WS → ${WS_URL}`);
+  try {
+    state.ws = new WebSocket(WS_URL);
+
+    state.ws.onopen = () => {
+      state.connected = true;
+      clearTimeout(state.reconnectTimer);
+      setDot('online');
+      setStatus('Connecté · ' + WS_URL);
+      log('ok', 'WebSocket connecté à la régie');
+      showToast('✅ Régie connectée', 'success');
+      // Actualiser la liste des écrans
+      fetchScreens();
+    };
+
+    state.ws.onmessage = (e) => {
+      try {
+        const pkt = JSON.parse(e.data);
+        handleIncoming(pkt);
+      } catch(ex) { /* ignore */ }
+    };
+
+    state.ws.onclose = () => {
+      state.connected = false;
+      setDot('offline');
+      setStatus('Déconnecté – Reconnexion dans 3s…');
+      log('warn', 'WS fermé – tentative dans 3s');
+      state.reconnectTimer = setTimeout(connectWS, 3000);
+    };
+
+    state.ws.onerror = () => {
+      state.connected = false;
+      setDot('offline');
+    };
+  } catch(e) {
+    log('err', 'Erreur WS: ' + e.message);
+    state.reconnectTimer = setTimeout(connectWS, 4000);
+  }
+}
+
+function handleIncoming(pkt) {
+  if (pkt.cmd === 'PING') {
+    // Un écran s'identifie via le serveur
+    if (pkt.screenConfig) registerScreen(pkt.screenConfig);
+  }
+}
+
+function sendCmd(cmd, extra) {
+  const pkt = {
+    cmd,
+    targetScreenId: state.currentTarget,
+    transition: state.currentTransition,
+    timestamp: Date.now(),
+    ...extra
+  };
+  if (state.connected && state.ws) {
+    state.ws.send(JSON.stringify(pkt));
+    log('info', `[${cmd}] → ${state.currentTarget || 'ALL'}`);
+  } else {
+    // Fallback HTTP
+    fetch(`${API_BASE}/broadcast`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(pkt)
+    }).then(() => log('ok', `[${cmd}] via HTTP`))
+      .catch(e => log('err', e.message));
+  }
+}
+
+// ─────────────────────────────────────────────────────
+//  ACTIONS DE DIFFUSION
+// ─────────────────────────────────────────────────────
+function sendCurrentContent() {
+  if (!state.currentVerse.text) { showToast('Sélectionnez un verset d\'abord', 'info'); return; }
+  sendCmd('VERSE', { verseText: state.currentVerse.text, verseReference: state.currentVerse.ref });
+  showToast('📡 ' + state.currentVerse.ref, 'success');
+}
+
+function sendVerse(text, ref) {
+  state.currentVerse = { text, ref };
+  updatePreview(text, ref);
+  sendCmd('VERSE', { verseText: text, verseReference: ref });
+  showToast('📖 ' + ref, 'success');
+}
+
+function sendLowerThird() {
+  const t = document.getElementById('lt-title').value.trim();
+  const s = document.getElementById('lt-subtitle').value.trim();
+  if (!t) return;
+  sendCmd('LOWER_THIRD', { lowerThirdTitle: t, lowerThirdSubtitle: s });
+  showPreviewLowerThird(t, s);
+  showToast('📝 Lower-Third affiché', 'info');
+}
+
+function hideLowerThird() {
+  sendCmd('CLEAR', {});
+  document.getElementById('prev-lower').style.display = 'none';
+}
+
+function quickLowerThird(title, subtitle) {
+  document.getElementById('lt-title').value = title;
+  document.getElementById('lt-subtitle').value = subtitle;
+  sendLowerThird();
+}
+
+function sendMedia(url, type) {
+  sendCmd('MEDIA', { mediaUrl: url, mediaType: type });
+  log('info', `Média: ${url}`);
+}
+
+function sendRtspStream() {
+  const url = document.getElementById('rtsp-url').value.trim();
+  if (!url) return;
+  sendMedia(url, 'RTSP');
+  showToast('📡 Flux RTSP envoyé', 'info');
+}
+
+function blackout() {
+  sendCmd('MEDIA', { mediaUrl: '', mediaType: 'BLACK' });
+  sendCmd('CLEAR', {});
+  updatePreview('', '');
+  document.getElementById('prev-lower').style.display = 'none';
+  showToast('⬛ Noir complet', 'info');
+}
+
+function prevItem() {
+  if (state.playlistIndex > 0) {
+    state.playlistIndex--;
+    activatePlaylistItem(state.playlistIndex);
+  }
+}
+
+function nextItem() {
+  if (state.playlistIndex < state.playlistItems.length - 1) {
+    state.playlistIndex++;
+    activatePlaylistItem(state.playlistIndex);
+  }
+}
+
+// ─────────────────────────────────────────────────────
+//  ÉCRANS
+// ─────────────────────────────────────────────────────
+async function fetchScreens() {
+  try {
+    const r = await fetch(`${API_BASE}/screens`);
+    const screens = await r.json();
+    screens.forEach(s => registerScreen(s));
+  } catch(e) { /* offline */ }
+}
+
+function registerScreen(config) {
+  state.screens[config.screenId] = config;
+  renderScreenBadges();
+  renderTargetChips();
+  renderMultiPreview();
+}
+
+function renderScreenBadges() {
+  const c = document.getElementById('screen-badges');
+  const list = Object.values(state.screens);
+  if (!list.length) { c.innerHTML = '<span style="font-size:0.65rem;color:var(--text-dim)">Aucun écran</span>'; return; }
+  c.innerHTML = list.map(s => `
+    <div class="screen-badge" onclick="openScreenConfig('${s.screenId}')">
+      <div class="dot"></div>
+      ${s.deviceName.substring(0, 12)}
+    </div>`).join('');
+}
+
+function renderTargetChips() {
+  const c = document.getElementById('target-screens');
+  const screens = Object.values(state.screens);
+  const allSel = state.currentTarget === null;
+  c.innerHTML = `<div class="target-chip ${allSel ? 'selected':''}" onclick="selectTarget(null, this)">Tous</div>`;
+  screens.forEach(s => {
+    c.innerHTML += `<div class="target-chip ${state.currentTarget===s.screenId ? 'selected':''}" onclick="selectTarget('${s.screenId}', this)">${s.deviceName.substring(0,10)}</div>`;
+  });
+}
+
+function selectTarget(id, el) {
+  state.currentTarget = id;
+  document.querySelectorAll('#target-screens .target-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function renderMultiPreview() {
+  const c = document.getElementById('preview-multi');
+  const screens = Object.values(state.screens);
+  c.innerHTML = screens.map(s => `
+    <div class="mini-screen" onclick="selectTarget('${s.screenId}', event.target.closest('.mini-screen'))">
+      <div style="background:linear-gradient(135deg,#0a1628,#1a2a4a);width:100%;height:100%"></div>
+      <div class="screen-role-badge">${getRoleLabel(s.role)}</div>
+      <div class="screen-name">${s.deviceName.substring(0, 14)}</div>
+    </div>`).join('');
+}
+
+function getRoleLabel(role) {
+  const map = { MAIN:'MAIN', LOWER_THIRD:'L3', STAGE_RETURN:'SCÈNE', AUDIENCE:'SALLE', CHOIR:'CHORALE', PODIUM:'PODIUM' };
+  return map[role] || role;
+}
+
+function toggleMultiPreview() {
+  const single = document.getElementById('preview-zone-single');
+  const multi  = document.getElementById('preview-multi');
+  const isMulti = multi.style.display !== 'none';
+  single.style.display = isMulti ? 'block' : 'none';
+  multi.style.display  = isMulti ? 'none'  : 'grid';
+}
+
+// ─────────────────────────────────────────────────────
+//  BIBLE (données statiques de démo + API locale)
+// ─────────────────────────────────────────────────────
+const DEMO_VERSES = {
+  'Jean 3': [
+    { v: 16, t: 'Car Dieu a tant aimé le monde qu\'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu\'il ait la vie éternelle.' },
+    { v: 17, t: 'Dieu, en effet, n\'a pas envoyé son Fils dans le monde pour qu\'il condamne le monde, mais pour que le monde soit sauvé par lui.' },
+    { v: 18, t: 'Celui qui croit en lui n\'est pas condamné; mais celui qui ne croit pas est déjà condamné, parce qu\'il n\'a pas cru au nom du Fils unique de Dieu.' },
+  ],
+  'Psaume 23': [
+    { v: 1, t: 'L\'Éternel est mon berger: je ne manquerai de rien.' },
+    { v: 2, t: 'Il me fait reposer dans de verts pâturages, il me dirige près des eaux paisibles.' },
+    { v: 3, t: 'Il restaure mon âme, il me conduit dans les sentiers de la justice, à cause de son nom.' },
+    { v: 4, t: 'Quand je marche dans la vallée de l\'ombre de la mort, je ne crains aucun mal, car tu es avec moi.' },
+  ],
+  'Philippiens 4': [
+    { v: 13, t: 'Je puis tout par celui qui me fortifie.' },
+    { v: 4, t: 'Réjouissez-vous toujours dans le Seigneur; je le répète, réjouissez-vous.' },
+    { v: 7, t: 'Et la paix de Dieu, qui surpasse toute intelligence, gardera vos cœurs et vos pensées en Jésus-Christ.' },
+  ],
+};
+
+function loadVerseList(bookChap) {
+  const verses = DEMO_VERSES[bookChap] || [];
+  const c = document.getElementById('verse-list');
+  if (!verses.length) { c.innerHTML = '<div style="text-align:center;padding:14px;color:var(--text-dim);font-size:0.75rem">Téléchargez une version de Bible pour accéder à tous les versets.</div>'; return; }
+  c.innerHTML = verses.map(v => `
+    <div class="verse-item" onclick="selectVerse('${bookChap} ${v.v}', this, ${JSON.stringify(v.t).replace(/'/g, '&#39;')})">
+      <div class="verse-ref">${bookChap} ${v.v}</div>
+      <div class="verse-preview">${v.t}</div>
+    </div>`).join('');
+}
+
+function selectVerse(ref, el, text) {
+  document.querySelectorAll('.verse-item').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  state.currentVerse = { text, ref };
+  updatePreview(text, ref);
+}
+
+function searchVerses(q) {
+  if (!q) { loadVerseList('Jean 3'); return; }
+  // Recherche dans les données démo
+  const results = [];
+  for (const [chap, verses] of Object.entries(DEMO_VERSES)) {
+    verses.forEach(v => {
+      if (v.t.toLowerCase().includes(q.toLowerCase())) {
+        results.push({ ref: `${chap} ${v.v}`, text: v.t });
+      }
+    });
+  }
+  const c = document.getElementById('verse-list');
+  if (!results.length) { c.innerHTML = '<div style="text-align:center;padding:14px;color:var(--text-dim);font-size:0.75rem">Aucun résultat</div>'; return; }
+  c.innerHTML = results.map(r => `
+    <div class="verse-item" onclick="selectVerse('${r.ref}', this, ${JSON.stringify(r.text)})">
+      <div class="verse-ref">${r.ref}</div>
+      <div class="verse-preview">${r.text}</div>
+    </div>`).join('');
+}
+
+function selectVersion(v, el) {
+  state.bibleVersion = v;
+  document.querySelectorAll('.version-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function loadChapter() { /* Chargement via API locale */ }
+function loadVerses() {
+  const b = document.getElementById('book-select').value;
+  const c = document.getElementById('chapter-select').value;
+  if (b && c) loadVerseList(`${b} ${c}`);
+}
+
+// ─────────────────────────────────────────────────────
+//  CHANTS (démo)
+// ─────────────────────────────────────────────────────
+const DEMO_SONGS = [
+  { id: 's1', title: 'Dieu est bon', artist: 'Louange', lang: 'fr',
+    slides: [
+      { type: 'verse', text: 'Dieu est bon, tout le temps\nTout le temps, Dieu est bon' },
+      { type: 'chorus', text: 'Loué soit le Seigneur à jamais\nSon amour est éternel' },
+    ]
+  },
+  { id: 's2', title: 'Tu es Dieu', artist: 'SW0L', lang: 'fr',
+    slides: [
+      { type: 'verse', text: 'Tu es Dieu, tu es Roi\nTu règnes sur ma vie' },
+      { type: 'chorus', text: 'Je t\'adore, je t\'honore\nTu es le Seigneur' },
+      { type: 'bridge', text: 'Gloire à toi, gloire à toi\nPour toujours et à jamais' },
+    ]
+  },
+];
+
+function renderSongs() {
+  const c = document.getElementById('songs-list');
+  c.innerHTML = DEMO_SONGS.map(s => `
+    <div class="song-card" onclick="openSong('${s.id}', this)">
+      <span class="song-icon">🎵</span>
+      <div class="song-info">
+        <div class="song-title">${s.title}</div>
+        <div class="song-meta">${s.artist} · ${s.lang.toUpperCase()}</div>
+      </div>
+    </div>`).join('');
+}
+
+function openSong(id, el) {
+  document.querySelectorAll('.song-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const song = DEMO_SONGS.find(s => s.id === id);
+  if (!song) return;
+  const c = document.getElementById('song-slides');
+  c.style.display = 'block';
+  c.innerHTML = `<div style="font-size:0.7rem;font-weight:700;color:var(--text-dim);margin:8px 0 4px">${song.title}</div>` +
+    `<div class="slides-nav">` +
+    song.slides.map((sl, i) => `
+      <div class="slide-btn ${sl.type}" onclick='sendVerse(${JSON.stringify(sl.text)}, "${song.title} · ${['Couplet','Refrain','Bridge'][['verse','chorus','bridge'].indexOf(sl.type)]||i+1}")'>
+        <span class="slide-type">${sl.type === 'chorus' ? '🔁' : sl.type === 'verse' ? '📝' : '🌉'}</span>
+        ${sl.text.substring(0, 40)}…
+      </div>`).join('') +
+    '</div>';
+}
+
+function filterSongs(q) {
+  // Filtre côté client
+}
+
+// ─────────────────────────────────────────────────────
+//  PLAYLIST
+// ─────────────────────────────────────────────────────
+function addPlaylistItem() {
+  if (!state.currentVerse.text) return;
+  const item = { type: 'VERSE', title: state.currentVerse.ref, text: state.currentVerse.text };
+  state.playlistItems.push(item);
+  renderPlaylist();
+}
+
+function renderPlaylist() {
+  const c = document.getElementById('playlist-zone');
+  if (!state.playlistItems.length) {
+    c.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-dim);font-size:0.8rem"><div style="font-size:2rem;margin-bottom:8px">📋</div>Programme vide.</div>';
+    return;
+  }
+  c.innerHTML = state.playlistItems.map((it, i) => `
+    <div class="playlist-item ${state.playlistIndex === i ? 'active':''}" onclick="activatePlaylistItem(${i})">
+      <span class="item-num">${String(i+1).padStart(2,'0')}</span>
+      <span class="item-icon">${it.type === 'VERSE' ? '📖' : it.type === 'SONG' ? '🎵' : '🎬'}</span>
+      <div class="item-text">
+        <div class="item-title">${it.title}</div>
+        ${it.text ? `<div class="item-sub">${it.text.substring(0, 50)}…</div>` : ''}
+      </div>
+      <div class="item-actions">
+        <button class="btn-icon-only" onclick="removeItem(${i}, event)">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function activatePlaylistItem(i) {
+  state.playlistIndex = i;
+  const item = state.playlistItems[i];
+  if (item && item.type === 'VERSE') {
+    sendVerse(item.text, item.title);
+  }
+  renderPlaylist();
+}
+
+function removeItem(i, e) {
+  e.stopPropagation();
+  state.playlistItems.splice(i, 1);
+  renderPlaylist();
+}
+
+function clearPlaylist() {
+  state.playlistItems = [];
+  state.playlistIndex = -1;
+  renderPlaylist();
+}
+
+function openSession() { showToast('Fonctionnalité Programme à venir', 'info'); }
+
+// ─────────────────────────────────────────────────────
+//  APERÇU
+// ─────────────────────────────────────────────────────
+function updatePreview(text, ref) {
+  document.getElementById('prev-verse-text').textContent = text;
+  document.getElementById('prev-verse-ref').textContent = ref;
+}
+
+function showPreviewLowerThird(t, s) {
+  const lt = document.getElementById('prev-lower');
+  lt.style.display = 'block';
+  document.getElementById('prev-lower-title').textContent = t;
+  document.getElementById('prev-lower-sub').textContent = s;
+}
+
+// ─────────────────────────────────────────────────────
+//  TRANSITIONS
+// ─────────────────────────────────────────────────────
+function selectTransition(t, el) {
+  state.currentTransition = t;
+  document.querySelectorAll('.transition-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ─────────────────────────────────────────────────────
+//  ONGLETS
+// ─────────────────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'bible') loadVerseList('Jean 3');
+}
+
+// ─────────────────────────────────────────────────────
+//  LANGUE
+// ─────────────────────────────────────────────────────
+function setLang(l) {
+  state.lang = l;
+  localStorage.setItem('lang', l);
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent === l.toUpperCase());
+  });
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[l] && i18n[l][key]) el.textContent = i18n[l][key];
+  });
+}
+
+// ─────────────────────────────────────────────────────
+//  BIBLE MANAGER MODAL
+// ─────────────────────────────────────────────────────
+const BIBLE_VERSIONS = [
+  { code: 'lsg',   lang: 'fr', name: 'Louis Segond 1910', flag: '🇫🇷' },
+  { code: 'nbs',   lang: 'fr', name: 'Nouvelle Bible Segond', flag: '🇫🇷' },
+  { code: 'rvr60', lang: 'es', name: 'Reina-Valera 1960', flag: '🇪🇸' },
+  { code: 'nvi',   lang: 'es', name: 'Nueva Versión Internacional', flag: '🇪🇸' },
+  { code: 'kjv',   lang: 'en', name: 'King James Version', flag: '🇬🇧' },
+];
+
+function openBibleManager() {
+  const c = document.getElementById('bible-versions-list');
+  c.innerHTML = BIBLE_VERSIONS.map(v => `
+    <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg-deep);border:1px solid var(--border);border-radius:8px;margin-bottom:8px">
+      <span style="font-size:1.5rem">${v.flag}</span>
+      <div style="flex:1">
+        <div style="font-size:0.85rem;font-weight:600">${v.name}</div>
+        <div style="font-size:0.7rem;color:var(--text-dim)">${v.lang.toUpperCase()} · ~3 Mo</div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="downloadBible('${v.code}', this)" id="dl-${v.code}">
+        ⬇️ Télécharger
+      </button>
+    </div>`).join('');
+  document.getElementById('bible-modal').classList.add('open');
+}
+
+function closeBibleManager() {
+  document.getElementById('bible-modal').classList.remove('open');
+}
+
+function downloadBible(code, btn) {
+  btn.textContent = '⏳ Téléchargement…';
+  btn.disabled = true;
+  // Appel API interne de l'APK
+  fetch(`${API_BASE}/bible/download?version=${code}`, { method: 'POST' })
+    .then(r => r.json())
+    .then(d => {
+      btn.textContent = '✅ Installée';
+      showToast(`Bible ${code.toUpperCase()} installée !`, 'success');
+    })
+    .catch(() => {
+      btn.textContent = '❌ Erreur (pas de WiFi ?)';
+      btn.disabled = false;
+      showToast('Vérifiez votre connexion Internet', 'error');
+    });
+}
+
+// ─────────────────────────────────────────────────────
+//  LOG
+// ─────────────────────────────────────────────────────
+function log(type, msg) {
+  const box = document.getElementById('log-box');
+  const now = new Date().toTimeString().slice(0,8);
+  const cls = { ok:'log-ok', warn:'log-warn', err:'log-err', info:'log-info' }[type] || '';
+  box.innerHTML += `<div class="log-entry"><span class="log-time">${now}</span><span class="${cls}">${msg}</span></div>`;
+  box.scrollTop = box.scrollHeight;
+}
+
+function clearLog() { document.getElementById('log-box').innerHTML = ''; }
+
+// ─────────────────────────────────────────────────────
+//  TOASTS
+// ─────────────────────────────────────────────────────
+function showToast(msg, type='info') {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ─────────────────────────────────────────────────────
+//  STATUS
+// ─────────────────────────────────────────────────────
+function setDot(state) {
+  const d = document.getElementById('ws-dot');
+  d.className = 'status-dot ' + state;
+}
+
+function setStatus(txt) {
+  document.getElementById('ws-status').textContent = txt;
+}
+
+// ─────────────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  setLang(state.lang);
+  connectWS();
+  loadVerseList('Jean 3');
+  renderSongs();
+
+  // Afficher l'URL HTTP
+  const hi = document.getElementById('http-info');
+  hi.style.display = 'flex';
+  document.getElementById('http-url').textContent = `${HTTP_HOST}:8080`;
+
+  log('info', 'EliteCast Pro v1.0 démarré');
+  log('info', `WS: ${WS_URL}`);
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextItem(); }
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); prevItem(); }
+  if (e.key === 'Escape')     { sendCmd('CLEAR', {}); }
+  if (e.key === 'Enter' && e.ctrlKey) { sendCurrentContent(); }
+});
+</script>
+</body>
+</html>

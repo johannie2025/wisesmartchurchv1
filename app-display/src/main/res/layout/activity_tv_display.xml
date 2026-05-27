@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ═══════════════════════════════════════════════════════════
+  Layout TvDisplayActivity – Architecture 3 couches :
+  Layer 0 : PlayerView (vidéo/fond)
+  Layer 1 : Overlay sombre + Lower-Third
+  Layer 2 : Texte Verset / Lyrics
+  ═══════════════════════════════════════════════════════════
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <!-- ══════════════════════════════════════════════════
+         LAYER 0 – FOND VIDÉO (ExoPlayer)
+    ══════════════════════════════════════════════════ -->
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:use_controller="false"
+        app:resize_mode="zoom"
+        android:visibility="visible" />
+
+    <!-- ══════════════════════════════════════════════════
+         LAYER 1 – OVERLAY SOMBRE (Transparence configurable)
+    ══════════════════════════════════════════════════ -->
+    <View
+        android:id="@+id/overlay_layer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:alpha="0.5" />
+
+    <!-- ══════════════════════════════════════════════════
+         LAYER 1B – LOWER THIRD (Bas de l'écran)
+    ══════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:id="@+id/lower_third_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="#CC001A4B"
+        android:paddingStart="48dp"
+        android:paddingEnd="48dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="20dp"
+        android:visibility="gone">
+
+        <!-- Barre couleur accent -->
+        <View
+            android:layout_width="80dp"
+            android:layout_height="4dp"
+            android:background="#FF1744"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/lower_third_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/lower_third_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="#BBFFFFFF"
+            android:fontFamily="sans-serif-light"
+            android:text="" />
+    </LinearLayout>
+
+    <!-- ══════════════════════════════════════════════════
+         LAYER 2 – TEXTE PRINCIPAL (Verset / Lyrics)
+    ══════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingStart="80dp"
+        android:paddingEnd="80dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="120dp">
+
+        <TextView
+            android:id="@+id/verse_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="48sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="sans-serif-light"
+            android:lineSpacingMultiplier="1.4"
+            android:shadowColor="#000000"
+            android:shadowRadius="12"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/verse_reference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:textColor="#AAFFFFFF"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginTop="24dp"
+            android:shadowColor="#000000"
+            android:shadowRadius="8"
+            android:text="" />
+    </LinearLayout>
+
+    <!-- ══════════════════════════════════════════════════
+         INDICATEUR DE STATUT (Coin haut droite)
+    ══════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <View
+            android:id="@+id/connection_dot"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/dot_red" />
+
+        <TextView
+            android:id="@+id/status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#88FFFFFF"
+            android:fontFamily="monospace"
+            android:text="EliteCast Pro"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</FrameLayout>

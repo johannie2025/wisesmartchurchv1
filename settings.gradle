@@ -1,0 +1,2 @@
+rootProject.name = "WiseSmartChurch"
+include ':app-display', ':app-regie'

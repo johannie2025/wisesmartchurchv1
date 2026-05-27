@@ -1,0 +1,70 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.wisedesign.wisesmartchurch.regie'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.wisedesign.wisesmartchurch.regie"
+        minSdk 23
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-DEBUG"
+        }
+    }
+
+    // Régie = téléphone : pas de split ABI nécessaire (APK universel)
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi-v7a", "arm64-v8a"
+            universalApk true
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    packagingOptions {
+        resources { excludes += ['META-INF/DEPENDENCIES','META-INF/LICENSE','META-INF/NOTICE'] }
+    }
+
+    buildFeatures { viewBinding true }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.7.0'
+    implementation 'androidx.fragment:fragment:1.6.2'
+    // NanoHTTPD – serveur HTTP embarqué pour l'interface web de régie
+    implementation 'org.nanohttpd:nanohttpd:2.3.1'
+    // WebSocket serveur – envoie commandes aux écrans
+    implementation 'org.java-websocket:Java-WebSocket:1.5.4'
+    // NSD – découverte automatique des écrans display sur le réseau
+    implementation 'androidx.room:room-runtime:2.6.1'
+    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+    implementation 'com.airbnb.android:lottie:6.3.0'
+}
