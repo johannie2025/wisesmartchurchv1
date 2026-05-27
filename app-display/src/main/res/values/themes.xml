@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.WiseSmartChurch" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">#1E3A8A</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
-    </style>
-
-    <style name="Theme.WiseSmartChurch.Fullscreen" parent="Theme.WiseSmartChurch">
+    <style name="Theme.WiseSmartChurch.Fullscreen" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">#111827</item>
+        <item name="android:background">@android:color/black</item>
     </style>
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_bible"
+        android:title="Bible"
+        android:icon="@android:drawable/ic_menu_info_details"/>
+    <item android:id="@+id/nav_songs"
+        android:title="Cantiques"
+        android:icon="@android:drawable/ic_media_play"/>
+    <item android:id="@+id/nav_media"
+        android:title="Médias"
+        android:icon="@android:drawable/ic_menu_gallery"/>
+    <item android:id="@+id/nav_screens"
+        android:title="Écrans"
+        android:icon="@android:drawable/ic_menu_manage"/>
+</menu>

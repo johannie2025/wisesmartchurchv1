@@ -2,4 +2,7 @@
 <resources>
     <string name="app_name">Wise Smart Church</string>
     <string name="app_name_regie">WSC Régie</string>
+    <string name="starting_server">Démarrage du serveur…</string>
+    <string name="server_ready">Serveur EliteCast prêt</string>
+    <string name="screens_connected">écran(s) connecté(s)</string>
 </resources>
