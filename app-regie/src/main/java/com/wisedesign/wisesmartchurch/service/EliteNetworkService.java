@@ -47,7 +47,7 @@ public class EliteNetworkService extends Service {
         return new NotificationCompat.Builder(this, WiseSmartApp.CHANNEL_ID_NETWORK)
                 .setContentTitle("EliteCast Pro")
                 .setContentText(text)
-                .setSmallIcon(R.drawable.ic_broadcast)
+                .setSmallIcon(android.R.drawable.ic_menu_share)
                 .setContentIntent(pi)
                 .setOngoing(true)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
