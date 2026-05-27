@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.wisedesign.wisesmartchurch.regie.R;
+import com.wisedesign.wisesmartchurch.R;
 import com.wisedesign.wisesmartchurch.data.model.BroadcastPacket;
 import com.wisedesign.wisesmartchurch.data.model.ScreenConfig;
 import com.wisedesign.wisesmartchurch.network.EliteNetworkManager;

@@ -10,7 +10,7 @@ import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
 
 import com.wisedesign.wisesmartchurch.WiseSmartApp;
-import com.wisedesign.wisesmartchurch.display.R;
+import com.wisedesign.wisesmartchurch.R;
 import com.wisedesign.wisesmartchurch.network.EliteNetworkManager;
 import com.wisedesign.wisesmartchurch.ui.display.TvDisplayActivity;
 
